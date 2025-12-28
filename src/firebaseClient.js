@@ -16,7 +16,7 @@ let auth = null
 export async function initFirebase() {
   if (app && auth) return { app, auth }
   try {
-    const mod = await import('./firebaseConfig.js')
+    const mod = await import('./config/firebaseConfig.js')
     const firebaseConfig = mod.default || mod.firebaseConfig || mod
     if (!firebaseConfig || !firebaseConfig.apiKey || firebaseConfig.apiKey.startsWith('<')) {
       console.warn('Firebase: `src/firebaseConfig.js` contiene valores de ejemplo o está incompleto.')

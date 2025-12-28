@@ -38,6 +38,7 @@ node_modules
 
 # Local Firebase client config (do not commit)
 /src/firebaseConfig.js
+/src/config/firebaseConfig.js
 
 # Local build files
 /dist
