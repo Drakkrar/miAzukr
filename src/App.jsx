@@ -6,7 +6,7 @@ import Dashboard from './pages/Dashboard'
 import Registros from './pages/Registros'
 import Informes from './pages/Informes'
 import Configuracion from './pages/Configuracion'
-import { onAuthChanged } from './firebaseClient'
+import { onAuthChanged } from './services/auth.service'
 import LoadingLogo from './components/LoadingLogo'
 
 export const AuthContext = createContext({ user: null })

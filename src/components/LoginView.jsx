@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { Box, TextField, Button, Typography, Paper } from '@mui/material'
-import { signInWithEmail, signInWithGoogle } from '../firebaseClient'
+import { signInWithEmail, signInWithGoogle } from '../services/auth.service'
 import { AuthContext } from '../App'
 import LoadingLogo from './LoadingLogo'
 

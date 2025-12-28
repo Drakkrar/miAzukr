@@ -16,7 +16,7 @@ import {
   Alert
 } from '@mui/material'
 import { AuthContext } from '../App'
-import { getUserProfile, getUserRecords, getUserRecordExtreme } from '../firebaseClient'
+import { getUserProfile, getUserRecords, getUserRecordExtreme } from '../services/firestore.service'
 import { generatePDFReport, generateExcelReport } from '../utils/reportGenerator'
 
 // Use the exact type strings used by RecordForm.jsx so filtering matches saved records

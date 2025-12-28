@@ -24,8 +24,8 @@ export default function Dashboard() {
     ;(async () => {
       if (!user?.email) return
       try {
-        const mod = await import('../firebaseClient.js')
-        const p = await mod.getUserProfile(user.email)
+        const { getUserProfile } = await import('../services/firestore.service')
+        const p = await getUserProfile(user.email)
         const d = (p && p.dashboard) || {}
         const defaultOrder = ['Glucosa', 'Presión arterial', 'Alimentación', 'Actividad', 'Medicación']
         const order = Array.isArray(d.order) && d.order.length ? d.order : defaultOrder

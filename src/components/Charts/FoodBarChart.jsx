@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Box, Card, CardHeader, CardContent, ToggleButton, ToggleButtonGroup, Typography, CircularProgress } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { AuthContext } from '../../App'
-import { getUserRecords } from '../../firebaseClient'
+import { getUserRecords } from '../../services/firestore.service'
 import { BarChart } from '@mui/x-charts/BarChart'
 
 function formatTsToDateKey(ts) {

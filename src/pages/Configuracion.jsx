@@ -25,7 +25,7 @@ import {
 } from '@mui/material'
 import UndoIcon from '@mui/icons-material/Undo'
 import { AuthContext } from '../App'
-import { signOut } from '../firebaseClient'
+import { signOut } from '../services/auth.service'
 import { useThemePreference } from '../theme'
 import defaultProfile from '../defaultProfile'
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital'
@@ -65,7 +65,8 @@ function AccountTab() {
       if (!user?.email) return
       setLoadingProfile(true)
       try {
-        const p = await import('../firebaseClient.js').then(mod => mod.getUserProfile(user.email))
+        const { getUserProfile } = await import('../services/firestore.service')
+        const p = await getUserProfile(user.email)
         const merged = { ...defaultProfile, ...(p || {}) }
         if (mounted) {
           setProfile(merged)
@@ -92,8 +93,8 @@ function AccountTab() {
   async function handleSave() {
     if (!user?.email) return
     try {
-      const save = await import('../firebaseClient.js').then(mod => mod.saveUserProfile)
-      const res = await save(user.email, profile || {})
+      const { saveUserProfile } = await import('../services/firestore.service')
+      const res = await saveUserProfile(user.email, profile || {})
       setOriginalProfile(profile)
       if (res && res.offline) showSnack('Guardado localmente — se sincronizará cuando haya conexión')
       else showSnack('Perfil guardado')
@@ -506,8 +507,8 @@ function AjustesTab() {
       if (!user?.email) return
       setLoadingDash(true)
       try {
-        const getProf = await import('../firebaseClient.js').then(mod => mod.getUserProfile)
-        const p = await getProf(user.email)
+        const { getUserProfile } = await import('../services/firestore.service')
+        const p = await getUserProfile(user.email)
         const merged = { ...defaultProfile, ...(p || {}) }
         const d = (merged.dashboard) || {}
         const order = Array.isArray(d.order) && d.order.length ? d.order : defaultOrder
@@ -559,8 +560,8 @@ function AjustesTab() {
   async function handleSaveDashboard() {
     if (!user?.email || !dashboardConfig) return
     try {
-      const save = await import('../firebaseClient.js').then(mod => mod.saveUserProfile)
-      const res = await save(user.email, { dashboard: dashboardConfig })
+      const { saveUserProfile } = await import('../services/firestore.service')
+      const res = await saveUserProfile(user.email, { dashboard: dashboardConfig })
       // mark saved as original so FAB dirty state clears
       setOriginalDashboard(dashboardConfig)
       if (res && res.offline) showSnack('Ajustes guardados localmente — se sincronizarán cuando haya conexión')

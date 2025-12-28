@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Box, Card, CardHeader, CardContent, ToggleButton, ToggleButtonGroup, Typography, CircularProgress } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 import { AuthContext } from '../../App'
-import { getUserProfile, getUserRecords } from '../../firebaseClient'
+import { getUserProfile, getUserRecords } from '../../services/firestore.service'
 import defaultProfile from '../../defaultProfile'
 import { ScatterChart } from '@mui/x-charts/ScatterChart'
 

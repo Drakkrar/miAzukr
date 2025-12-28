@@ -8,7 +8,6 @@ import ListAltIcon from '@mui/icons-material/ListAlt'
 import AssessmentIcon from '@mui/icons-material/Assessment'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { AuthContext } from '../App'
-import { signOut } from '../firebaseClient'
 
 const navItems = [
     { label: 'Dashboard', path: '/dashboard', icon: <DashboardIcon /> },
