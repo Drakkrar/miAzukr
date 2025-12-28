@@ -37,6 +37,7 @@ export async function getUserProfile(email) {
     
     return snap.data() || {}
   } catch (error) {
+    console.error('getUserProfile error:', error)
     throw new DatabaseError('Error al obtener perfil de usuario', 'getUserProfile', error)
   }
 }
@@ -58,7 +59,7 @@ export async function saveUserProfile(email, profile) {
   
   // Queue operation if offline or Firebase not initialized
   if (!app || !isOnline()) {
-    offlineQueue.enqueue('saveProfile', { email, profile })
+    offlineQueue.enqueue({ action: 'saveProfile', email, profile })
     throw new OfflineError('Perfil guardado localmente. Se sincronizará cuando vuelvas a estar en línea.')
   }
   
@@ -70,7 +71,7 @@ export async function saveUserProfile(email, profile) {
     await setDoc(ref, profile, { merge: true })
   } catch (error) {
     // If operation fails, queue it
-    offlineQueue.enqueue('saveProfile', { email, profile })
+    offlineQueue.enqueue({ action: 'saveProfile', email, profile })
     throw new DatabaseError('Error al guardar perfil. Se reintentará automáticamente.', 'saveUserProfile', error)
   }
 }
@@ -163,7 +164,7 @@ export async function saveUserRecord(email, record) {
   // Queue operation if offline or Firebase not initialized
   if (!app || !isOnline()) {
     const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    offlineQueue.enqueue('saveRecord', { email, record: { ...record, id: tempId } })
+    offlineQueue.enqueue({ action: 'saveRecord', email, record: { ...record, id: tempId } })
     throw new OfflineError('Registro guardado localmente. Se sincronizará cuando vuelvas a estar en línea.')
   }
   
@@ -182,7 +183,7 @@ export async function saveUserRecord(email, record) {
   } catch (error) {
     // If operation fails, queue it
     const tempId = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
-    offlineQueue.enqueue('saveRecord', { email, record: { ...record, id: tempId } })
+    offlineQueue.enqueue({ action: 'saveRecord', email, record: { ...record, id: tempId } })
     throw new DatabaseError('Error al guardar registro. Se reintentará automáticamente.', 'saveUserRecord', error)
   }
 }
@@ -203,7 +204,7 @@ export async function updateUserRecord(email, idRecord, record) {
   
   // Queue operation if offline or Firebase not initialized
   if (!app || !isOnline()) {
-    offlineQueue.enqueue('updateRecord', { email, idRecord, record })
+    offlineQueue.enqueue({ action: 'updateRecord', email, idRecord, record })
     throw new OfflineError('Actualización guardada localmente. Se sincronizará cuando vuelvas a estar en línea.')
   }
   
@@ -219,7 +220,7 @@ export async function updateUserRecord(email, idRecord, record) {
     await setDoc(ref, rec, { merge: true })
   } catch (error) {
     // If operation fails, queue it
-    offlineQueue.enqueue('updateRecord', { email, idRecord, record })
+    offlineQueue.enqueue({ action: 'updateRecord', email, idRecord, record })
     throw new DatabaseError('Error al actualizar registro. Se reintentará automáticamente.', 'updateUserRecord', error)
   }
 }
@@ -238,7 +239,7 @@ export async function deleteUserRecord(email, idRecord) {
   
   // Queue operation if offline or Firebase not initialized
   if (!app || !isOnline()) {
-    offlineQueue.enqueue('deleteRecord', { email, idRecord })
+    offlineQueue.enqueue({ action: 'deleteRecord', email, idRecord })
     throw new OfflineError('Eliminación guardada localmente. Se sincronizará cuando vuelvas a estar en línea.')
   }
   
@@ -249,7 +250,7 @@ export async function deleteUserRecord(email, idRecord) {
     await deleteDoc(ref)
   } catch (error) {
     // If operation fails, queue it
-    offlineQueue.enqueue('deleteRecord', { email, idRecord })
+    offlineQueue.enqueue({ action: 'deleteRecord', email, idRecord })
     throw new DatabaseError('Error al eliminar registro. Se reintentará automáticamente.', 'deleteUserRecord', error)
   }
 }
